@@ -3,10 +3,14 @@ package udemy.course.drawingapp
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.get
 
 class MainActivity : AppCompatActivity() {
     private var drawingView: DrawingView? = null
+    private var currentColorButtonSelected: ImageButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -14,6 +18,15 @@ class MainActivity : AppCompatActivity() {
 
         drawingView = findViewById(R.id.drawing_view)
         drawingView?.setBrushSize(20F)
+
+        val colorsRow: LinearLayout = findViewById(R.id.colors_row)
+        currentColorButtonSelected = colorsRow[0] as ImageButton
+        currentColorButtonSelected!!.setImageDrawable(
+            ContextCompat.getDrawable(
+                this,
+                R.drawable.pallete_selected
+            )
+        )
 
         val brushSizeBtn: ImageButton = findViewById(R.id.brush_size_btn)
         brushSizeBtn.setOnClickListener { brushSizeDialog() }
