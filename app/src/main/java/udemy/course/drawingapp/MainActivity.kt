@@ -2,6 +2,7 @@ package udemy.course.drawingapp
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         val colorsRow: LinearLayout = findViewById(R.id.colors_row)
         currentColorButtonSelected = colorsRow[0] as ImageButton
-        currentColorButtonSelected!!.setImageDrawable(
+        currentColorButtonSelected?.setImageDrawable(
             ContextCompat.getDrawable(
                 this,
                 R.drawable.pallete_selected
@@ -52,5 +53,27 @@ class MainActivity : AppCompatActivity() {
             brushDialog.dismiss()
         }
         brushDialog.show()
+    }
+
+    fun colorSelected(view: View) {
+        if (currentColorButtonSelected !== view) {
+            val colorButton = view as ImageButton
+            val colorTag = colorButton.tag.toString()
+            drawingView?.setBrushColor(colorTag)
+
+            colorButton.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.pallete_selected
+                )
+            )
+            currentColorButtonSelected?.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.pallete_normal
+                )
+            )
+            currentColorButtonSelected = view
+        }
     }
 }

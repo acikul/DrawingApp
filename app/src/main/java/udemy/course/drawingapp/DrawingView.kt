@@ -8,17 +8,27 @@ import android.view.MotionEvent
 import android.view.View
 
 class DrawingView(context: Context, attributes: AttributeSet) : View(context, attributes) {
-    private var drawPath: CustomPath? = null
-    private var canvasBitmap: Bitmap? = null
-    private var drawPaint: Paint? = null
-    private var canvasPaint: Paint? = null
+    private var drawPath: CustomPath? = null // instance of CustomPath inner class for further use
+    private var canvasBitmap: Bitmap? = null // bitmap instance
+    private var drawPaint: Paint? = null     // style and color information for drawing
+    private var canvasPaint: Paint? = null   // instance of canvas paint view
     private var brushSize: Float = 0.toFloat()
-    private var color = Color.BLACK
+    private var colorGlobal = Color.BLACK
     private var canvas: Canvas? = null
     private val paths = ArrayList<CustomPath>()
 
     init {
         setup()
+    }
+
+    private fun setup() {
+        drawPaint = Paint()
+        drawPath = CustomPath(colorGlobal, brushSize)
+        drawPaint?.color = colorGlobal
+        drawPaint?.style = Paint.Style.STROKE
+        drawPaint?.strokeJoin = Paint.Join.ROUND
+        drawPaint?.strokeCap = Paint.Cap.ROUND
+        canvasPaint = Paint(Paint.DITHER_FLAG)
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -32,52 +42,42 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
         canvas?.drawBitmap(canvasBitmap!!, 0f, 0f, canvasPaint)
 
         for (path in paths) {
-            drawPaint!!.strokeWidth = path!!.brushSize
-            drawPaint!!.color = path!!.color
+            drawPaint!!.strokeWidth = path.brushSize
+            drawPaint!!.color = path.color
             canvas?.drawPath(path, drawPaint!!)
         }
 
         if (!drawPath!!.isEmpty) {
             drawPaint!!.strokeWidth = drawPath!!.brushSize
-            drawPaint!!.color = drawPaint!!.color
+            drawPaint!!.color = drawPath!!.color
             canvas?.drawPath(drawPath!!, drawPaint!!)
         }
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        val touchX = event?.x
-        val touchY = event?.y
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        val touchX = event.x
+        val touchY = event.y
 
-        when (event?.action) {
+        when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                drawPath!!.color = color
+                drawPath!!.color = colorGlobal
                 drawPath!!.brushSize = brushSize
 
                 drawPath!!.reset()
-                drawPath!!.moveTo(touchX!!, touchY!!)
+                drawPath!!.moveTo(touchX, touchY)
             }
             MotionEvent.ACTION_MOVE -> {
-                drawPath!!.lineTo(touchX!!, touchY!!)
+                drawPath!!.lineTo(touchX, touchY)
             }
             MotionEvent.ACTION_UP -> {
                 paths.add(drawPath!!)
-                drawPath = CustomPath(color, brushSize)
+                drawPath = CustomPath(colorGlobal, brushSize)
             }
             else -> return false
         }
         invalidate()
 
         return true
-    }
-
-    private fun setup() {
-        drawPaint = Paint()
-        drawPath = CustomPath(color, brushSize)
-        drawPaint?.color = color
-        drawPaint?.style = Paint.Style.STROKE
-        drawPaint?.strokeJoin = Paint.Join.ROUND
-        drawPaint?.strokeCap = Paint.Cap.ROUND
-        canvasPaint = Paint(Paint.DITHER_FLAG)
     }
 
     fun setBrushSize(newSize: Float) {
@@ -87,6 +87,11 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
             resources.displayMetrics
         )
         drawPaint!!.strokeWidth = brushSize
+    }
+
+    fun setBrushColor(colorParam: String) {
+        colorGlobal = Color.parseColor(colorParam)
+        drawPaint!!.color = colorGlobal
     }
 
     internal inner class CustomPath(var color: Int, var brushSize: Float) : Path() {
