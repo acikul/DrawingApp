@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">DrawingApp</string>
     <string name="button_for_displaying_brush_size_dialog">button for displaying brush size dialog</string>
+    <string name="button_for_opening_gallery_image_picker">button for opening gallery image picker</string>
 </resources>
