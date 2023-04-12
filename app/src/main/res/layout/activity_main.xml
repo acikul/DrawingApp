@@ -7,29 +7,30 @@
     tools:context=".MainActivity"
     tools:ignore="ExtraText">
 
-    <udemy.course.drawingapp.DrawingView
-        android:id="@+id/drawing_view"
+    <FrameLayout
+        android:id="@+id/frame_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="5dp"
+        android:padding="1dp"
         android:background="@drawable/background_drawing_view_layout"
         app:layout_constraintBottom_toTopOf="@id/colors_row"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageButton
-        android:id="@+id/brush_size_btn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="5dp"
-        android:src="@drawable/ic_brush"
-        android:scaleType="fitXY"
-        app:layout_constraintTop_toBottomOf="@id/colors_row"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/button_for_displaying_brush_size_dialog" />
+        <ImageView
+            android:id="@+id/bkg_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/eiffel" />
+
+        <udemy.course.drawingapp.DrawingView
+            android:id="@+id/drawing_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/colors_row"
@@ -37,7 +38,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@id/brush_size_btn"
-        app:layout_constraintTop_toBottomOf="@id/drawing_view"
+        app:layout_constraintTop_toBottomOf="@id/frame_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -112,8 +113,20 @@
             android:tag="@color/white"
             android:background="@color/white"
             android:onClick="colorSelected" />
-
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/brush_size_btn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_brush"
+        android:scaleType="fitXY"
+        app:layout_constraintTop_toBottomOf="@id/colors_row"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/button_for_displaying_brush_size_dialog" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
