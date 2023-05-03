@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths>
+    <external-path
+        name="drawn"
+        path="Android/data/udemy.course.drawingapp/files" />
+</paths>

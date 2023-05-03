@@ -4,4 +4,5 @@
     <string name="button_for_opening_gallery_image_picker">button for opening gallery image picker</string>
     <string name="please_wait">Please wait...</string>
     <string name="undo_button">undo button</string>
+    <string name="button_for_saving_the_drawn_image">button for saving the drawn image</string>
 </resources>

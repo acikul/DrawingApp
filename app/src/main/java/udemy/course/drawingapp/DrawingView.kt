@@ -16,6 +16,7 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
     private var colorGlobal = Color.BLACK
     private var canvas: Canvas? = null
     private val paths = ArrayList<CustomPath>()
+    private val undoPaths = ArrayList<CustomPath>()
 
     init {
         setup()
@@ -92,6 +93,13 @@ class DrawingView(context: Context, attributes: AttributeSet) : View(context, at
     fun setBrushColor(colorParam: String) {
         colorGlobal = Color.parseColor(colorParam)
         drawPaint!!.color = colorGlobal
+    }
+
+    fun undoer() {
+        if (paths.isNotEmpty()) {
+            undoPaths.add(paths.removeLast())
+            invalidate()
+        }
     }
 
     internal inner class CustomPath(var color: Int, var brushSize: Float) : Path() {
